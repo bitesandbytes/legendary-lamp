@@ -8,7 +8,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "Distribution.h"
+#include "distributions/distribution.h"
 
 class Transform {
 

@@ -5,12 +5,11 @@
       <sourceFolder url="file://$MODULE_DIR$/SpellCorrector.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Transform.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Distribution.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SpellCorrector.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SpaceTransform.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/distributions/distribution.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Transform.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Distribution.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SpaceTransform.h" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

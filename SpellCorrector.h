@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include <queue>
-#include "Distribution.h"
+#include "distributions/distribution.h"
 #include "Transform.h"
 
 #ifndef NLPASSIGNMENT_SPELLCORRECTOR_H
