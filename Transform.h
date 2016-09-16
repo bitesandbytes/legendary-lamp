@@ -8,11 +8,29 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "Distribution.h"
+
 class Transform {
 
  private:
+  // The probability associated with this transform.
   float probability;
+
+  // A mapping from strings to strings here.
+  // Transform applies each of the transforms here to generate a final set of candidates.
+  // Each element in the map is assumed to represent probability 'probability'
+  // Thus if more than one element of the map( also if the same element is applied several times ) the probability is multiplied with themselves.
+  // Note: Not used for the space transform.
   std::map<std::string, std::string> map;
+
+  // Hold the probability distribution over the words here.
+  Distribution<std::string> *words;
+
+ public:
+  void setWords(Distribution<std::string> *words);
+ public:
+  std::map<std::string, float> *getWords() const;
+  void setWords(std::map<std::string, float> *words);
 
  public:
   float getProbability() const;
@@ -27,8 +45,8 @@ class Transform {
 
   }
 
-  std::vector< std::pair<std::string, float probability> > applyAll( std::string str ) const;
-  std::vector< std::pair<std::string, float probability> > applyOne( std::string str, unsigned int occurence = 0 ) const;
+  virtual std::vector< std::tuple<std::string, float, bool> > applyAll( std::string str ) const;
+  virtual std::vector< std::tuple<std::string, float, bool> > applyOne( std::string str, unsigned int occurence = 0 ) const;
 
 };
 

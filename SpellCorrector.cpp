@@ -3,6 +3,7 @@
 //
 
 #include "SpellCorrector.h"
+#include "SpaceTransform.h"
 Distribution<std::string> *SpellCorrector::getWords() const {
   return words;
 }
