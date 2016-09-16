@@ -19,19 +19,20 @@ class Distribution<T> {
 
  public:
   // Evaluate the floating point probability of the the input.
-  virtual float eval( T inp );
+  virtual float eval(const T inp) = 0;
 
-
-
+  virtual bool exists(const T inp) {
+    return true;
+  }
 
   // FUNCTIONS TO MODIFY THE DISTRIUTION.
   // NO NEED TO IMPLEMENT IF HARD-CODED OR IF IT DOES NOT CHANGE
   // DURING THE EXECUTION.
 
   // Add a data point to the distribution. Probabilities are recomputed completely here. Could be inefficeient.
-  virtual float data( T data );
+  virtual float data(T data);
   // Process batch data. Probabilities are recomputed after a batch of inputs.
-  virtual float batchData( std::map<T,unsigned int> vec );
+  virtual float batchData(std::map<T, unsigned int> vec);
 
 };
 
