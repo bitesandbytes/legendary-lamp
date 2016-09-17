@@ -13,6 +13,7 @@ class SpaceTransform : public Transform{
  public:
 
   virtual std::vector< std::tuple<std::string, float, bool> > applyAll( std::string str ) const;
+  float get_probability(std::string s) const;
 };
 
 #endif //NLPASSIGNMENT_SPACETRANSFORM_H
