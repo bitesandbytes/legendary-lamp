@@ -55,7 +55,7 @@ class MatrixPairDistribution : public Distribution<std::pair<char,char>> {
 
 class CorpusWordDistribution : public Distribution<std::string> {
  public:
-  CorpusPairCharDistribution(const DictionaryParser &dict_parser) {
+  CorpusWordDistribution(const DictionaryParser &dict_parser) {
     this->word_prob_map_ = dict_parser.GetWordProbs();
   }
 

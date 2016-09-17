@@ -62,23 +62,18 @@ float SpaceTransform::get_probability(std::string s) const {
   return prob * std::pow(this->probability, spaces);
 }
 
-std::vector<std::tuple<std::string, float, bool> > SpaceTransform::applyAll(std::string str) const {
-
+std::vector<std::tuple<std::string, float, bool> > SpaceTransform::ApplyTransform(const std::tuple<std::string,
+                                                                                                   float,
+                                                                                                   bool> &input) {
   // Use this->words->eval(word) to get probabilities for the words.
   // Use this->words->exists( word ) to check if the word is in the dictionary.
   // Use this->probability to get the probability of space.
 
   std::vector<std::tuple<std::string, float, bool>> collection;
+  std::string str(std::get<0>(input));
 
   auto col = get_strings(str, 0, str.length() - 1, this->words);
   std::unordered_set<std::string> uniques;
-  std::vector<std::string> words;
-  std::transform(col.begin(), col.end(), std::back_inserter(words), [](std::vector<std::string> word_vec) {
-    std::string str;
-    for (auto str : word_vec) str += (" " + str);
-    return str;
-  });
-  //uniques.insert(col.begin(), col.end());g
   std::stringstream ss;
   for (const auto &iter1 : col) {
     std::copy(iter1.begin(), iter1.end(), std::ostream_iterator<std::string>(ss, " "));
@@ -87,10 +82,8 @@ std::vector<std::tuple<std::string, float, bool> > SpaceTransform::applyAll(std:
     ss.str("");
   }
 
-  for (std::string iter : uniques) {
-    //
-    collection.push_back(std::tuple(iter, get_probability(iter), true));
-  }
+  for (std::string iter : uniques)
+    collection.push_back(std::make_tuple(iter, get_probability(iter), true));
 
   // Return a set of candidates along with their probabilities. The boolean should be True for a valid condidate and False for an invalid( but potentially valid ) candidate.
   return std::vector<std::tuple<std::string, float, bool>>();

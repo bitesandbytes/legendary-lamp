@@ -8,7 +8,8 @@
 #include "Transform.h"
 
 class ReversalTransform : public MyTransform<26> {
-  ReversalTransform(CorpusWordDistribution *dict, CorpusCharDistribution *char_p);
+ public:
+  ReversalTransform(CorpusWordDistribution *dict, CorpusPairCharDistribution *char_p);
   std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string, float, bool> &input);
  private:
   std::tuple<std::string, float, bool> ApplyTransformSingle(const std::tuple<std::string, float, bool> &input,
@@ -24,9 +25,10 @@ ReversalTransform::ReversalTransform(CorpusWordDistribution *dict, CorpusPairCha
 
   // TODO(SaipraveenB) : Normalize matrix here.
 
+  // 2-char string.
+  std::string str("..");
   for (int i = 0; i < 26; i++)
     for (int ch = 0; ch < 26; ch++) {
-      std::string str("..");
       str[0] = static_cast<char>(i + 'a');
       str[1] = static_cast<char>(ch + 'a');
       this->transform_matrix_[i][ch] /= char_pair->eval(str);
