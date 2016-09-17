@@ -23,8 +23,8 @@ class DictionaryParser {
   DictionaryParser(const std::string &filename) {
     std::vector<std::string> lines;
     std::ifstream file(filename);
-
-    copy(std::istream_iterator<std::string>(file), {}, back_inserter(lines));
+    if (!file)
+      throw std::runtime_error("");
 
     std::string line;
     while (std::getline(file, line, '\r')) {
@@ -36,8 +36,11 @@ class DictionaryParser {
     // Format : <WORD> <COUNT>
     long total_count = 0;
     for (const auto &word_count : lines) {
+      for (auto &val : this->char_p_)
+        val = 0;
+
       // Obtain word, count
-      const auto &splits = mylib::split(word_count, ' ');
+      const auto &splits = mylib::split(word_count, '\t');
       std::string word = splits[0];
       long count = std::stol(splits[1]);
       total_count += count;
@@ -58,6 +61,7 @@ class DictionaryParser {
     for (auto &word_count : this->probs_)
       word_count.second = (word_count.second + SMOOTHING_ALPHA) / total_count;
 
+    // TODO(SaipraveenB) : Fix this. total_count is too high => int(ratio*count) = 0.
     const float ratio = static_cast<float>(40000000) / total_count;
     // Smooth & normalize char occurrences.
     for (auto &char_freq : this->char_p_)
