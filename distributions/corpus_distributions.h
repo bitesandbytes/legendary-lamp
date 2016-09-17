@@ -10,9 +10,7 @@
 
 class CorpusCharDistribution : public Distribution<char> {
  public:
-  CorpusCharDistribution(const DictionaryParser &dict_parser) {
-    this->single_char_p_ = dict_parser.GetCharProbs();
-  }
+  CorpusCharDistribution(DictionaryParser &dict_parser) : single_char_p_(dict_parser.GetCharProbs()) {}
 
   // Returns P(c) for input char.
   float eval(const char input) {
@@ -20,44 +18,44 @@ class CorpusCharDistribution : public Distribution<char> {
   }
 
  private:
-  const decltype(DictionaryParser::char_p_) &single_char_p_;
+  decltype(DictionaryParser::char_p_) &single_char_p_;
 };
 
 class CorpusPairCharDistribution : public Distribution<std::string> {
  public:
-  CorpusPairCharDistribution(const DictionaryParser &dict_parser) {
-    this->pair_char_p_ = dict_parser.GetPairCharProbs();
-  }
+  CorpusPairCharDistribution(DictionaryParser &dict_parser) : pair_char_p_(dict_parser.GetPairCharProbs()) {}
 
   // Returns P(ab) for input string :: "ab".
   float eval(const std::string input) {
-    return pair_char_p_[static_cast<int>(input[0] - 'a')][static_cast<int>(input[1] - 'a')];
+    if (pair_char_p_.find(input) == pair_char_p_.end())
+      throw std::runtime_error("CorpusPairCharDistribution::eval :: Invalid input - " + input);
+    else
+      return pair_char_p_[input];
   }
 
  private:
-  const decltype(DictionaryParser::char_pq_) &pair_char_p_;
+  decltype(DictionaryParser::char_pq_) &pair_char_p_;
 };
 
-class MatrixPairDistribution : public Distribution<std::pair<char,char>> {
+class MatrixPairDistribution : public Distribution<std::pair<char, char>> {
  public:
-  CorpusPairCharDistribution(const DictionaryParser &dict_parser, in) {
-    this->pair_char_p_ = dict_parser.GetPairCharProbs();
-  }
+  MatrixPairDistribution(DictionaryParser &dict_parser) : pair_char_p_(dict_parser.GetPairCharProbs()) {}
 
   // Returns P(ab) for input string :: "ab".
   float eval(const std::string input) {
-    return pair_char_p_[static_cast<int>(input[0] - 'a')][static_cast<int>(input[1] - 'a')];
+    if (pair_char_p_.find(input) == pair_char_p_.end())
+      throw std::runtime_error("CorpusPairCharDistribution::eval :: Invalid input - " + input);
+    else
+      return pair_char_p_[input];
   }
 
  private:
-  const decltype(DictionaryParser::char_pq_) &pair_char_p_;
+  decltype(DictionaryParser::char_pq_) &pair_char_p_;
 };
 
 class CorpusWordDistribution : public Distribution<std::string> {
  public:
-  CorpusWordDistribution(const DictionaryParser &dict_parser) {
-    this->word_prob_map_ = dict_parser.GetWordProbs();
-  }
+  CorpusWordDistribution(DictionaryParser &dict_parser) : word_prob_map_(dict_parser.GetWordProbs()) {}
 
   bool exists(const std::string input) {
     return (word_prob_map_.find(input) != word_prob_map_.end());
@@ -75,7 +73,7 @@ class CorpusWordDistribution : public Distribution<std::string> {
   }
 
  private:
-  const decltype(DictionaryParser::probs_) &word_prob_map_;
+  decltype(DictionaryParser::probs_) &word_prob_map_;
 };
 
 #endif //NLPASSIGNMENT_CORPUSDISTRIBUTION_H

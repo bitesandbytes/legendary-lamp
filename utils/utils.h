@@ -5,27 +5,24 @@
 #ifndef NLPASSIGNMENT_UTILS_H
 #define NLPASSIGNMENT_UTILS_H
 
-namespace {
-// Sub function to split string.
-void split(const std::string &s, char delim, std::vector <std::string> &elems) {
+#include <sstream>
+#include <iostream>
+#include <string>
+#include <array>
+
+namespace mylib {
+// Function to split strings with a delimiter.
+inline std::vector<std::string> split(const std::string &s, char delim) {
+  std::vector<std::string> elems;
   std::stringstream ss;
   ss.str(s);
   std::string item;
   while (std::getline(ss, item, delim)) {
     elems.push_back(item);
   }
-}
-} // namespace
-
-namespace mylib {
-
-// Function to split strings with a delimiter.
-std::vector <std::string> split(const std::string &s, char delim) {
-  std::vector <std::string> elems;
-  split(s, delim, elems);
   return elems;
 }
-
+/*
 // Multidimensional array implementation.
 template<class T, unsigned ... RestD>
 struct array;
@@ -45,7 +42,8 @@ struct array<T, PrimaryD, RestD...> {
   type data;
 
   OneDimensionDownArrayT &operator[](unsigned i) { return data[i]; }
-};
-}
+};*/
+
+} // namespace mylib
 
 #endif //NLPASSIGNMENT_UTILS_H

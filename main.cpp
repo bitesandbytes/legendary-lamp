@@ -29,10 +29,10 @@ int main(int argc, char **argv) {
 
   // Important for transforms.
   std::array<std::vector<ResultType>, 4> transform_results;
-  std::array<MyTransform *, 4> transforms = {new InsertionTransform(&word_distr, &char_distr),
-                                             new DeletionTransform(&word_distr, &pair_char_distr),
-                                             new SubstituteTransform(&word_distr, &char_distr),
-                                             new ReversalTransform(&word_distr, &pair_char_distr)};
+  MyTransform *transforms[] = {new InsertionTransform(&word_distr, &char_distr),
+                               new DeletionTransform(&word_distr, &pair_char_distr),
+                               new SubstituteTransform(&word_distr, &char_distr),
+                               new ReversalTransform(&word_distr, &pair_char_distr)};
 
   SpaceTransform *space_transform = new SpaceTransform(&word_distr);
 

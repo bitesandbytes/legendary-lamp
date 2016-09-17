@@ -15,7 +15,7 @@
  * Note that you have to convert frequencies into probabilities for them to work.
  */
 template<typename T>
-class Distribution<T> {
+class Distribution {
 
  public:
   // Evaluate the floating point probability of the the input.
@@ -30,10 +30,13 @@ class Distribution<T> {
   // DURING THE EXECUTION.
 
   // Add a data point to the distribution. Probabilities are recomputed completely here. Could be inefficeient.
-  virtual float data(T data);
+  virtual float data(T data) {
+    return 0.0f;
+  }
   // Process batch data. Probabilities are recomputed after a batch of inputs.
-  virtual float batchData(std::map<T, unsigned int> vec);
-
+  virtual float batchData(std::map<T, unsigned int> vec) {
+    return 0.0f;
+  }
 };
 
 #endif //NLPASSIGNMENT_DISTRIBUTION_H

@@ -8,7 +8,6 @@
 #include <iterator>
 #include <sstream>
 #include "SpaceTransform.h"
-#include "utils/utils.h"
 std::vector<std::vector<std::vector<std::vector<std::string>>>> table;
 
 namespace {
@@ -55,8 +54,9 @@ std::vector<std::vector<std::string>> get_strings(std::string str,
 
 float SpaceTransform::get_probability(std::string s) const {
   float prob = 1;
-  int spaces = mylib::split(s, ' ').size() - 1;
-  for (auto iter : mylib::split(s, ' ')) {
+  const auto &splits = mylib::split(s, ' ');
+  int spaces = static_cast<int>(splits.size()) - 1;
+  for (auto iter : splits) {
     prob *= this->words->eval(iter);
   }
   return prob * std::pow(this->probability, spaces);
