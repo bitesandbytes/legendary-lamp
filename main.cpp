@@ -11,7 +11,7 @@
 #include "transforms/SpaceTransform.h"
 
 #define MAX_NUM_RESULTS 4
-#define MAX_NUM_ITERATIONS 10
+#define MAX_NUM_ITERATIONS 2
 
 typedef std::tuple<std::string, float, bool> ResultType;
 
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     std::cin >> input;
     std::cout << "\nCandidates : \n";
     if (word_distr.exists(input)) {
-      std::cout << input << "100.0";
+      std::cout << input << " 100.0";
       continue;
     }
 
