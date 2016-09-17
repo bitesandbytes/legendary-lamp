@@ -13,7 +13,7 @@ class CorpusCharDistribution : public Distribution<char> {
   CorpusCharDistribution(DictionaryParser &dict_parser) : single_char_p_(dict_parser.GetCharProbs()) {}
 
   // Returns P(c) for input char.
-  float eval(const char input) {
+  double eval(const char input) {
     return single_char_p_[static_cast<int>(input - 'a')];
   }
 
@@ -26,7 +26,7 @@ class CorpusPairCharDistribution : public Distribution<std::string> {
   CorpusPairCharDistribution(DictionaryParser &dict_parser) : pair_char_p_(dict_parser.GetPairCharProbs()) {}
 
   // Returns P(ab) for input string :: "ab".
-  float eval(const std::string input) {
+  double eval(const std::string input) {
     if (pair_char_p_.find(input) == pair_char_p_.end())
       throw std::runtime_error("CorpusPairCharDistribution::eval :: Invalid input - " + input);
     else
@@ -42,7 +42,7 @@ class MatrixPairDistribution : public Distribution<std::pair<char, char>> {
   MatrixPairDistribution(DictionaryParser &dict_parser) : pair_char_p_(dict_parser.GetPairCharProbs()) {}
 
   // Returns P(ab) for input string :: "ab".
-  float eval(const std::string input) {
+  double eval(const std::string input) {
     if (pair_char_p_.find(input) == pair_char_p_.end())
       throw std::runtime_error("CorpusPairCharDistribution::eval :: Invalid input - " + input);
     else
@@ -58,11 +58,11 @@ class CorpusWordDistribution : public Distribution<std::string> {
   CorpusWordDistribution(DictionaryParser &dict_parser) : word_prob_map_(dict_parser.GetWordProbs()) {}
 
   bool exists(const std::string input) {
-    return (word_prob_map_.find(input) != word_prob_map_.end());
+    return (word_prob_map_.count(input) != 0);
   }
 
   // Returns P(input) in corpus.
-  float eval(const std::string input) {
+  double eval(const std::string input) {
     const auto iter = word_prob_map_.find(input);
     if (iter == word_prob_map_.cend())
       throw std::runtime_error("CorpusWordDistribution::eval() :: input not found."

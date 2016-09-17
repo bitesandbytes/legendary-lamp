@@ -8,7 +8,7 @@
 
 class DeletionTransform : public MyTransform {
  public:
-  DeletionTransform(CorpusWordDistribution *word_distr, CorpusPairCharDistribution *pair_char_distr);
+  DeletionTransform(CorpusWordDistribution *word_distr, CorpusPairCharDistribution *pair_char_distr, CorpusCharDistribution *char_distr);
   std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string, float, bool> &input);
 
  public:
@@ -18,7 +18,7 @@ class DeletionTransform : public MyTransform {
   CorpusWordDistribution *word_distr;
 };
 
-DeletionTransform::DeletionTransform(CorpusWordDistribution *word_distr, CorpusPairCharDistribution *char_pair) {
+DeletionTransform::DeletionTransform(CorpusWordDistribution *word_distr, CorpusPairCharDistribution *char_pair, CorpusCharDistribution *char_distr) {
   this->word_distr = word_distr;
 
   this->transform_matrix_ =
@@ -53,11 +53,14 @@ DeletionTransform::DeletionTransform(CorpusWordDistribution *word_distr, CorpusP
 
   // 2-char string.
   std::string str("..");
-  for (int i = 0; i < 26; i++)
+  for (int i = 0; i < 27; i++)
     for (int ch = 0; ch < 26; ch++) {
       str[0] = static_cast<char>(i + 'a');
       str[1] = static_cast<char>(ch + 'a');
-      this->transform_matrix_[i][ch] /= char_pair->eval(str);
+      if( i != 26 )
+        this->transform_matrix_[i][ch] /= char_pair->eval(str);
+      else
+        this->transform_matrix_[i][ch] /= char_distr->eval(str[1]);
     }
 }
 
@@ -97,7 +100,13 @@ std::vector<std::tuple<std::string, float, bool> > DeletionTransform::ApplyTrans
       // Erase the j'th letter.
       newstr.erase(j, 1);
       float p = this->transform_matrix_[26][k];
-      all_transforms.push_back(std::make_tuple(newstr, p, this->word_distr->exists(newstr)));
+      bool b = this->word_distr->exists(newstr);
+
+      if( b )
+        p *= this->word_distr->eval(newstr);
+
+
+      all_transforms.push_back(std::make_tuple(newstr, p, b) );
 
     }
 
@@ -113,9 +122,16 @@ std::vector<std::tuple<std::string, float, bool> > DeletionTransform::ApplyTrans
       // Erase the jth letter.
       newstr.erase(j, 1);
       float p = this->transform_matrix_[previous - 'a'][k];
-      all_transforms.push_back(std::make_tuple(newstr, p, this->word_distr->exists(newstr)));
+      bool b = this->word_distr->exists(newstr);
+
+      if( b )
+        p *= this->word_distr->eval(newstr);
+
+
+      all_transforms.push_back(std::make_tuple(newstr, p, b));
 
     }
   }
+  return all_transforms;
 }
 #endif //NLPASSIGNMENT_DELETION_TRANSFORM_H

@@ -52,7 +52,7 @@ InsertionTransform::InsertionTransform(CorpusWordDistribution *word_distr, Corpu
           {46, 8, 9, 8, 26, 11, 14, 3, 5, 1, 17, 5, 6, 2, 2, 10, 0, 6, 23, 2, 11, 1, 2, 1, 1, 2}};
 
   // Add corpus info.
-  for (int i = 0; i < 26; i++)
+  for (int i = 0; i < 27; i++)
     for (int ch = 0; ch < 26; ch++)
       this->transform_matrix_[i][ch] /= char_distr->eval(static_cast<char>(ch + 'a'));
 
@@ -98,7 +98,12 @@ std::vector<std::tuple<std::string, float, bool> > InsertionTransform::ApplyTran
       newstr.insert(j, 1, k + 'a');
       // Use the 27th entry in the transform matrix as the probability.
       float p = this->transform_matrix_[26][k];
-      all_transforms.push_back(std::make_tuple(newstr, p, this->word_distr->exists(newstr)));
+      bool b = this->word_distr->exists(newstr);
+
+      if( b )
+        p *= this->word_distr->eval(newstr);
+
+      all_transforms.push_back(std::make_tuple(newstr, p, b) );
 
     }
 
@@ -115,11 +120,17 @@ std::vector<std::tuple<std::string, float, bool> > InsertionTransform::ApplyTran
       newstr.insert(j, 1, k + 'a');
       // Use the appropriate entry in the matrix as the probability.
       float p = this->transform_matrix_[previous - 'a'][k];
-      all_transforms.push_back(std::make_tuple(newstr, p, this->word_distr->exists(newstr)));
+      bool b = this->word_distr->exists(newstr);
+      if( b )
+        p *= this->word_distr->eval(newstr);
+
+      all_transforms.push_back(std::make_tuple(newstr, p, b));
 
     }
 
   }
+
+  return all_transforms;
 
 };
 #endif //NLPASSIGNMENT_INSERTION_TRANSFORM_H

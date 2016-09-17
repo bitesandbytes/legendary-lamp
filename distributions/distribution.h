@@ -19,7 +19,7 @@ class Distribution {
 
  public:
   // Evaluate the floating point probability of the the input.
-  virtual float eval(const T inp) = 0;
+  virtual double eval(const T inp) = 0;
 
   virtual bool exists(const T inp) {
     return true;

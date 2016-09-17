@@ -30,15 +30,15 @@ int main(int argc, char **argv) {
   // Important for transforms.
   std::array<std::vector<ResultType>, 4> transform_results;
   MyTransform *transforms[] = {new InsertionTransform(&word_distr, &char_distr),
-                               new DeletionTransform(&word_distr, &pair_char_distr),
+                               new DeletionTransform(&word_distr, &pair_char_distr, &char_distr),
                                new SubstituteTransform(&word_distr, &char_distr),
                                new ReversalTransform(&word_distr, &pair_char_distr)};
 
-  SpaceTransform *space_transform = new SpaceTransform(&word_distr);
+  //SpaceTransform *space_transform = new SpaceTransform(&word_distr);
 
   // Maps.
-  std::map<std::string, float> dict_words;
-  std::map<std::string, float> out_of_dict_words;
+  std::map<std::string, long double> dict_words;
+  std::map<std::string, long double> out_of_dict_words;
 
   while (true) {
     // Obtain wrongly spelled word.
@@ -51,13 +51,13 @@ int main(int argc, char **argv) {
     }
 
     // Run Space Transform first.
-    const auto &space_transformed = space_transform->ApplyTransform(std::make_tuple(input, 1.0f, false));
+    /*const auto &space_transformed = space_transform->ApplyTransform(std::make_tuple(input, 1.0f, false));
     if (!space_transformed.empty()) {
       for (int i = 0; i < space_transformed.size(); i++)
         std::cout << i << ". " << std::get<0>(space_transformed[i]) << "\n";
 
       continue;
-    }
+    }*/
 
     // Input to be sent to all transforms.
     // Can be modified to use some output from SpaceTransform.
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
             else
               dict_words[cand_word] += cand_prob;
           } else {
-            if (out_of_dict_words.find(cand_word) == dict_words.end())
+            if (out_of_dict_words.find(cand_word) == out_of_dict_words.end())
               out_of_dict_words[cand_word] = cand_prob;
             else
               out_of_dict_words[cand_word] += cand_prob;
@@ -116,5 +116,8 @@ int main(int argc, char **argv) {
     for (int i = 0; i < MAX_NUM_RESULTS && i < cand_probs.size(); i++) {
       std::cout << i << ". " << cand_probs[i].first << "  <-> " << cand_probs[i].second << "\n";
     };
+    out_of_dict_words.clear();
+    dict_words.clear();
+
   };
 }
