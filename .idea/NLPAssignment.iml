@@ -3,14 +3,14 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/SpellCorrector.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Transform.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/transforms/Transform.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SpellCorrector.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/SpaceTransform.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/transforms/SpaceTransform.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/distributions/distribution.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Transform.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/SpaceTransform.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/transforms/Transform.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/transforms/SpaceTransform.h" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">

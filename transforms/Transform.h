@@ -8,7 +8,8 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "distributions/distribution.h"
+#include "../distributions/distribution.h"
+#include "../distributions/corpus_distributions.h"
 
 class Transform {
 
@@ -49,6 +50,15 @@ class Transform {
   virtual std::vector<std::tuple<std::string, float, bool> > applyOne(std::string str,
                                                                       unsigned int occurence = 0) const;
 
+};
+
+template<int num_rows>
+class MyTransform {
+  virtual std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string,
+                                                                                             float,
+                                                                                             bool> &input) = 0;
+ protected:
+  std::array<std::array<float, 26>, num_rows> transform_matrix_;
 };
 
 #endif //NLPASSIGNMENT_TRANSFORM_H
