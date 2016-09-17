@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <fstream>
+#include <iterator>
 #include <map>
 #include <sstream>
 #include <string>
@@ -22,6 +23,8 @@ class DictionaryParser {
   DictionaryParser(const std::string &filename) {
     std::vector<std::string> lines;
     std::ifstream file(filename);
+
+    copy(std::istream_iterator<std::string>(file), {}, back_inserter(lines));
 
     std::string line;
     while (std::getline(file, line)) {
@@ -63,6 +66,7 @@ class DictionaryParser {
     // Smooth & normalize pair char occurrences.
     for (auto &pair_char : this->char_pq_)
       pair_char.second = static_cast<int>(static_cast<float>(pair_char.second + SMOOTHING_BETA) * ratio);
+
   }
   std::array<int, 26> &GetCharProbs() {
     return this->char_p_;
