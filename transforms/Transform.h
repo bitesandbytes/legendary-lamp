@@ -57,7 +57,7 @@ class MyTransform {
  public:
   virtual std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string,
                                                                                              float,
-                                                                                             bool> &input, int pos);
+                                                                                             bool> &input);
 
  protected:
   std::array<std::array<float, 26>, num_rows> transform_matrix_;

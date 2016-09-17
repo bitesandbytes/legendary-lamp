@@ -8,12 +8,17 @@
 #include <string>
 #include <vector>
 #include "Transform.h"
-class SpaceTransform : public Transform{
 
+class SpaceTransform : public MyTransform {
  public:
+  SpaceTransform(CorpusWordDistribution *dict) : words(dict) {}
+  std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string,
+                                                                                     float,
+                                                                                     bool> &input);
+  float get_probability(std::string s);
 
-  virtual std::vector< std::tuple<std::string, float, bool> > applyAll( std::string str ) const;
-  float get_probability(std::string s) const;
+ private:
+  CorpusWordDistribution *words;
 };
 
 #endif //NLPASSIGNMENT_SPACETRANSFORM_H
