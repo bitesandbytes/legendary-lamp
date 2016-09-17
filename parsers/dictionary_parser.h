@@ -27,7 +27,7 @@ class DictionaryParser {
     copy(std::istream_iterator<std::string>(file), {}, back_inserter(lines));
 
     std::string line;
-    while (std::getline(file, line)) {
+    while (std::getline(file, line, '\r')) {
       if (!line.empty())
         lines.push_back(line);
     }
