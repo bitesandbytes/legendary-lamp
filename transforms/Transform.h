@@ -54,9 +54,11 @@ class Transform {
 
 template<int num_rows>
 class MyTransform {
+ public:
   virtual std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string,
                                                                                              float,
-                                                                                             bool> &input) = 0;
+                                                                                             bool> &input, int pos);
+
  protected:
   std::array<std::array<float, 26>, num_rows> transform_matrix_;
 };

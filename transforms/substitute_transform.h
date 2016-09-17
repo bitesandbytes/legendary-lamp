@@ -8,6 +8,7 @@
 #include "Transform.h"
 
 class SubstituteTransform : public MyTransform<26> {
+ public:
   SubstituteTransform(CorpusWordDistribution *dict, CorpusCharDistribution *char_p);
   std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string, float, bool> &input);
  private:
