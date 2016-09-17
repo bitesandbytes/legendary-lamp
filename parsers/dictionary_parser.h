@@ -6,6 +6,9 @@
 #define LEGENDARY_LAMP_NLP_DICTIONARY_PARSER_H
 
 #include <string>
+#include <array>
+
+#define SMOOTHING_ALPHA 0.5f
 
 namespace {
 void UpdateSingleCharStats(decltype(DictionaryParser::char_p_) &char_map, const std::string &word) {
@@ -39,8 +42,8 @@ class DictionaryParser {
   }
 
  private:
-  std::array<26, int> char_p_;
-  std::array<26, std::array<26, int>> char_pq_;
+  std::array<int, 26> char_p_;
+  std::array<std::array<int, 26>, 26> char_pq_;
   std::map<std::string, float> probs_;
 };
 
@@ -75,8 +78,9 @@ DictionaryParser::DictionaryParser(const std::string &filename) {
     UpdateDoubleCharStats(this->char_pq_, word);
   }
 
+  // Smoothing with ALPHA = 0.5f.
   for (auto &word_count : this->probs_)
-    word_count.second /= total_count;
+    word_count.second = (word_count.second + SMOOTHING_ALPHA) / total_count;
 }
 
 #endif //LEGENDARY_LAMP_NLP_DICTIONARY_PARSER_H

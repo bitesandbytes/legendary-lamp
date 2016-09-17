@@ -24,4 +24,3 @@ std::vector<std::tuple<std::string, float, bool> > Transform::applyAll(std::stri
   // For example if the transform is "ab"->"a" and "ab" occurs twice, then there should be 2 candidates( one for each separately, but none for both together )
   return std::vector<std::tuple<std::string, float, bool>>();
 }
-

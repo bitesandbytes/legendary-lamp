@@ -8,7 +8,8 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "distributions/distribution.h"
+#include "../distributions/distribution.h"
+#include "../distributions/corpus_distributions.h"
 
 class Transform {
 
@@ -36,18 +37,28 @@ class Transform {
   float getProbability() const;
   void setProbability(float probability);
 
-  void addMapping( std::string src, std::string dest ){
+  void addMapping(std::string src, std::string dest) {
 
-    if( map.count( src ) )
+    if (map.count(src))
       throw "This source has already been mapped";
 
     map[src] = map[dest];
 
   }
 
-  virtual std::vector< std::tuple<std::string, float, bool> > applyAll( std::string str ) const;
-  virtual std::vector< std::tuple<std::string, float, bool> > applyOne( std::string str, unsigned int occurence = 0 ) const;
+  virtual std::vector<std::tuple<std::string, float, bool> > applyAll(std::string str) const;
+  virtual std::vector<std::tuple<std::string, float, bool> > applyOne(std::string str,
+                                                                      unsigned int occurence = 0) const;
 
+};
+
+template<int num_rows>
+class MyTransform {
+  virtual std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string,
+                                                                                             float,
+                                                                                             bool> &input) = 0;
+ protected:
+  std::array<std::array<float, 26>, num_rows> transform_matrix_;
 };
 
 #endif //NLPASSIGNMENT_TRANSFORM_H

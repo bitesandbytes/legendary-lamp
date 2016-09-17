@@ -7,7 +7,7 @@
 #include <map>
 #include <queue>
 #include "distributions/distribution.h"
-#include "Transform.h"
+#include "transforms/Transform.h"
 
 #ifndef NLPASSIGNMENT_SPELLCORRECTOR_H
 #define NLPASSIGNMENT_SPELLCORRECTOR_H
