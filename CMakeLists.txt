@@ -3,5 +3,5 @@ project(NLPAssignment)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp SpellCorrector.cpp SpellCorrector.h distributions/distribution.h transforms/Transform.cpp transforms/Transform.h transforms/SpaceTransform.cpp transforms/SpaceTransform.h)
+set(SOURCE_FILES main.cpp SpellCorrector.cpp SpellCorrector.h distributions/distribution.h transforms/Transform.cpp transforms/Transform.h transforms/SpaceTransform.cpp transforms/SpaceTransform.h transforms/deletion_transform.h)
 add_executable(NLPAssignment ${SOURCE_FILES})

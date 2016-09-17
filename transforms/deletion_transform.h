@@ -6,19 +6,19 @@
 #define NLPASSIGNMENT_INSERTION_TRANSFORM_H
 #include "Transform.h"
 
-class InsertionTransform : public MyTransform<27> {
+class DeletionTransform : public MyTransform<27> {
  public:
-  InsertionTransform(CorpusWordDistribution *word_distr, CorpusCharDistribution *char_distr);
+  DeletionTransform(CorpusWordDistribution *word_distr, CorpusCharDistribution *char_distr);
   std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string, float, bool> &input);
 
- private:
+ public:
   std::vector<std::tuple<std::string, float, bool> > ApplyTransformSingle(const std::tuple<std::string,
                                                                                            float,
                                                                                            bool> &input, int pos);
   const CorpusWordDistribution *word_distr;
 };
 
-InsertionTransform::InsertionTransform(CorpusWordDistribution *word_distr, CorpusCharDistribution *char_distr) {
+DeletionTransform::DeletionTransform(CorpusWordDistribution *word_distr, CorpusCharDistribution *char_distr) {
   this->word_distr = word_distr;
 
   // TODO(bitesandbytes) : Fill this in with the transform matrix.
@@ -34,7 +34,7 @@ InsertionTransform::InsertionTransform(CorpusWordDistribution *word_distr, Corpu
   return;
 }
 
-std::vector<std::tuple<std::string, float, bool> > ApplyTransformSingle(const std::tuple<std::string,
+std::vector<std::tuple<std::string, float, bool> > DeletionTransform::ApplyTransformSingle(const std::tuple<std::string,
                                                                                          float,
                                                                                          bool> &input, int pos) {
   std::string str(std::get<0>(input));
@@ -52,22 +52,21 @@ std::vector<std::tuple<std::string, float, bool> > ApplyTransformSingle(const st
   return transforms_single;
 }
 
-std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tuple<std::string, float, bool> &input) {
+std::vector<std::tuple<std::string, float, bool> > DeletionTransform::ApplyTransform(const std::tuple<std::string, float, bool> &input) {
   std::vector<std::tuple<std::string, float, bool> > all_transforms;
   all_transforms.reserve(26 * std::get<0>(input).size());
-
-  std::string word( std::get<0>(input) );
-
+  std::string word = std::get<0>(input);
   int strlen = (int) std::get<0>(input).size();
 
+
   for ( int j = 0; j < strlen; j++ ) {
-    // Without a previous letter.
+
+    // Without a previous.
     for( int k = 0; k < 26; k++ ){
 
       std::string newstr = word;
-      // Insert the letter k+'a' at location j.
-      newstr.insert(j,1,k + 'a');
-      // Use the 27th entry in the transform matrix as the probability.
+      // Erase the j'th letter.
+      newstr.erase(j,1);
       float p = this->transform_matrix_[26][k];
       all_transforms.push_back(std::make_tuple(newstr,p,this->word_distr->exists(newstr)));
 
@@ -78,20 +77,18 @@ std::vector<std::tuple<std::string, float, bool> > ApplyTransform(const std::tup
 
     // With a previous letter.
     char previous = word[j-1];
-
     for( int k = 0; k < 26; k++ ){
 
       std::string newstr = word;
-      // Insert the letter k+'a' at location j.
-      newstr.insert(j,1,k + 'a');
-      // Use the appropriate entry in the matrix as the probability.
+
+      // Erase the jth letter.
+      newstr.erase(j,1);
       float p = this->transform_matrix_[previous - 'a'][k];
       all_transforms.push_back(std::make_tuple(newstr,p,this->word_distr->exists(newstr)));
 
     }
 
   }
-
 
 
 };

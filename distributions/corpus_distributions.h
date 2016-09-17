@@ -38,6 +38,21 @@ class CorpusPairCharDistribution : public Distribution<std::string> {
   const decltype(DictionaryParser::char_pq_) &pair_char_p_;
 };
 
+class MatrixPairDistribution : public Distribution<std::pair<char,char>> {
+ public:
+  CorpusPairCharDistribution(const DictionaryParser &dict_parser, in) {
+    this->pair_char_p_ = dict_parser.GetPairCharProbs();
+  }
+
+  // Returns P(ab) for input string :: "ab".
+  float eval(const std::string input) {
+    return pair_char_p_[static_cast<int>(input[0] - 'a')][static_cast<int>(input[1] - 'a')];
+  }
+
+ private:
+  const decltype(DictionaryParser::char_pq_) &pair_char_p_;
+};
+
 class CorpusWordDistribution : public Distribution<std::string> {
  public:
   CorpusPairCharDistribution(const DictionaryParser &dict_parser) {
