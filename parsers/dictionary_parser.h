@@ -65,7 +65,7 @@ class DictionaryParser {
       word_count.second = (word_count.second + SMOOTHING_ALPHA) / total_count;
 
     // TODO(SaipraveenB) : Fix this. total_count is too high => int(ratio*count) = 0.
-    const long double ratio = static_cast<float>(40000000) / static_cast<float>( total_count );
+    const long double ratio = static_cast<float>(4000000) / static_cast<float>( total_count );
     // Smooth & normalize char occurrences.
     for (auto &char_freq : this->char_p_)
       char_freq = static_cast<int>(static_cast<long double>(char_freq + SMOOTHING_BETA) * ratio);

@@ -2,7 +2,10 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/parsers/trie.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/parsers/advanced_parser.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/transforms/spell_check.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/transforms/Transform.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/transforms/Transform.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/transforms/SpaceTransform.cpp" isTestSource="false" />

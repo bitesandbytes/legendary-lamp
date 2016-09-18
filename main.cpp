@@ -9,8 +9,10 @@
 #include "transforms/reversal_transform.h"
 #include "transforms/substitute_transform.h"
 #include "transforms/SpaceTransform.h"
+#include "parsers/advanced_parser.h"
+#include "transforms/spell_check.h"
 
-#define MAX_NUM_RESULTS 4
+#define MAX_NUM_RESULTS 20
 #define MAX_NUM_ITERATIONS 2
 
 typedef std::tuple<std::string, float, bool> ResultType;
@@ -21,6 +23,8 @@ int main(int argc, char **argv) {
 
   // Load corpus and extract values.
   DictionaryParser dict_parser(argv[1]);
+
+  DataParser data_parser( argv[1] );
 
   // Create distributions.
   CorpusWordDistribution word_distr(dict_parser);
@@ -40,7 +44,37 @@ int main(int argc, char **argv) {
   std::map<std::string, long double> dict_words;
   std::map<std::string, long double> out_of_dict_words;
 
+  // Advanced dictionary.
+  TrieNode* trie_dict = data_parser.root;
+
+
+  SpellChecker *sc = new SpellChecker(trie_dict);
   while (true) {
+    // Obtain wrongly spelled word.
+    std::string input;
+    std::cin >> input;
+    std::cout << "\nCandidates : \n";
+
+    auto list = sc->correct(input);
+
+    std::vector<std::pair<std::string, float>> cand_probs;
+    cand_probs.reserve(list.size());
+    for (const auto &dict_word : list) {
+      cand_probs.push_back(std::make_pair(dict_word.first, dict_word.second));
+    }
+
+    // Sort results in decreasing order of scores.
+    std::sort(cand_probs.begin(), cand_probs.end(), [](auto &left, auto &right) {
+      return right.second < left.second;
+    });
+
+    for (int i = 0; i < MAX_NUM_RESULTS && i < cand_probs.size(); i++) {
+      std::cout << i << ". " << cand_probs[i].first << "  <-> " << cand_probs[i].second << "\n";
+    };
+
+  }
+
+  /*while (true) {
     // Obtain wrongly spelled word.
     std::string input;
     std::cin >> input;
@@ -61,7 +95,7 @@ int main(int argc, char **argv) {
 
     // Input to be sent to all transforms.
     // Can be modified to use some output from SpaceTransform.
-    std::string str(input);
+    /*std::string str(input);
 
     // Init condition.
     out_of_dict_words[str] = 1.0f;
@@ -119,5 +153,6 @@ int main(int argc, char **argv) {
     out_of_dict_words.clear();
     dict_words.clear();
 
-  };
+  };*/
+
 }
